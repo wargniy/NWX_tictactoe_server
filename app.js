@@ -1,20 +1,44 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+require('./database');
 
-var app = express();
+const registerRouter = require('./routes/register');
+const loginRouter = require('./routes/login');
 
-app.use(logger('dev'));
+const app = express();
+
+let log;
+
+switch (process.env.NODE_ENV) {
+  case 'development':
+    log = 'dev';
+    break;
+  case 'test':
+    log = 'dev';
+    break;
+  case 'staging':
+    log = 'tiny';
+    break;
+  case 'production':
+    log = 'common';
+    break;
+  default:
+    throw new Error('NODE_ENV not found');
+}
+
+app.use(logger(log));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', registerRouter);
+app.use('/api', loginRouter);
 
 module.exports = app;
