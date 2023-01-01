@@ -10,7 +10,7 @@
     "bcrypt": "^3.0.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "config": "^3.2.2",
+    "config": "^3.3.8",
     "cookie-parser": "~1.4.4",
     "db-migrate": "^0.11.6",
     "db-migrate-mysql": "^1.1.10",
